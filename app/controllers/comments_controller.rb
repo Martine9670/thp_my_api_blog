@@ -43,11 +43,13 @@ class CommentsController < ApplicationController
   end
 
     # GET /articles/:article_id/comments
+# GET /articles/:article_id/comments
     def index
         @article = Article.find(params[:article_id])
-        render json: @article.comments
+        # On demande à Rails d'inclure les infos de l'utilisateur qui a écrit le comm
+        render json: @article.comments, include: [:user]
     end
-
+    
   private
 
   def comment_params
