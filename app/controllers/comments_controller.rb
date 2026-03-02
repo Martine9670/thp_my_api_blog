@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
-    before_action :authenticate_user!, only: [:create, :destroy]
-    
+    before_action :authenticate_user!, only: [:create, :destroy, :update]
+
   # POST /articles/:article_id/comments
   def create
     @article = Article.find(params[:article_id])
@@ -11,6 +11,21 @@ class CommentsController < ApplicationController
       render json: @comment, status: :created
     else
       render json: @comment.errors, status: :unprocessable_entity
+    end
+  end
+
+  # PATCH/PUT /articles/:article_id/comments/:id
+    def update
+    @comment = Comment.find(params[:id])
+
+    if @comment.user == current_user
+        if @comment.update(comment_params)
+        render json: @comment, status: :ok
+        else
+        render json: @comment.errors, status: :unprocessable_entity
+        end
+    else
+        render json: { error: "Tu ne peux pas modifier le commentaire d'un autre !" }, status: :forbidden
     end
   end
 
@@ -25,7 +40,7 @@ class CommentsController < ApplicationController
     else
         render json: { error: "Tu ne peux pas supprimer le commentaire d'un autre !" }, status: :forbidden
     end
-end
+  end
 
   private
 

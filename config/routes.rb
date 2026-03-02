@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   # 3. Articles + Commentaires imbriqués
   resources :articles do
-    resources :comments, only: [:create, :index, :destroy] # Uniquement ce dont on a besoin
+    resources :comments, only: [:create, :index, :destroy, :update] # Uniquement ce dont on a besoin
   end
 
   # Route de santé Rails 8
