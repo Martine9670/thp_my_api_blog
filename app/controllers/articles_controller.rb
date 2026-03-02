@@ -1,4 +1,5 @@
 class ArticlesController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_article, only: %i[ show update destroy ]
 
   # GET /articles
@@ -15,15 +16,16 @@ class ArticlesController < ApplicationController
 
   # POST /articles
   def create
-    @article = Article.new(article_params)
+    # On crée l'article en le liant directement à l'utilisateur connecté
+    @article = current_user.articles.build(article_params)
 
     if @article.save
       render json: @article, status: :created, location: @article
     else
-      render json: @article.errors, status: :unprocessable_content
+      render json: @article.errors, status: :unprocessable_entity
     end
   end
-
+  
   # PATCH/PUT /articles/1
   def update
     if @article.update(article_params)
