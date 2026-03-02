@@ -1,15 +1,17 @@
 Rails.application.routes.draw do
-  # 1. On définit la page d'accueil pour voir ton JSON directement
+  # 1. Page d'accueil (JSON des articles)
   root "articles#index"
 
-  # 2. On lie Devise aux contrôleurs API (indispensable pour éviter l'erreur 500)
+  # 2. Authentification Devise
   devise_for :users, controllers: {
     registrations: 'users/registrations'
   }
 
-  # 3. Tes routes pour les articles
-  resources :articles
+  # 3. Articles + Commentaires imbriqués
+  resources :articles do
+    resources :comments, only: [:create, :index] # Uniquement ce dont on a besoin
+  end
 
-  # Route de santé par défaut de Rails 8
+  # Route de santé Rails 8
   get "up" => "rails/health#show", as: :rails_health_check
 end

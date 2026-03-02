@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_many :comments, dependent: :destroy
   include Devise::JWT::RevocationStrategies::JTIMatcher
 
   devise :database_authenticatable, :registerable,
