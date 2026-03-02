@@ -1,5 +1,8 @@
 source "https://rubygems.org"
 
+gem 'devise'
+gem 'devise-jwt'
+gem 'rack-cors' # Pour autoriser le futur front-end React à parler à ton API
 gem "faker"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.1.2"
