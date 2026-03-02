@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :photos
   # 1. Page d'accueil (JSON des articles)
   root "articles#index"
 
