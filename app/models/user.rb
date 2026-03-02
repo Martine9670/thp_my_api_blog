@@ -1,7 +1,11 @@
 class User < ApplicationRecord
-  # On ajoute jwt_authenticatable
-  devise :database_authenticatable, :registerable,
-         :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
+  include Devise::JWT::RevocationStrategies::JTIMatcher
 
-  has_many :articles
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable,
+         :jwt_authenticatable, jwt_revocation_strategy: self
+
+  has_many :articles, dependent: :destroy
+  # Validation déjà gérée par Devise pour l'email, mais on peut ajouter :
+  validates :email, presence: true, uniqueness: true
 end

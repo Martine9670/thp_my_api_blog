@@ -25,21 +25,24 @@ class ArticlesController < ApplicationController
       render json: @article.errors, status: :unprocessable_entity
     end
   end
-  
+
   # PATCH/PUT /articles/1
   def update
+    # On cherche l'article UNIQUEMENT parmi ceux de l'utilisateur connecté
+    @article = current_user.articles.find(params[:id])
+
     if @article.update(article_params)
       render json: @article
     else
-      render json: @article.errors, status: :unprocessable_content
+      render json: @article.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /articles/1
   def destroy
+    @article = current_user.articles.find(params[:id])
     @article.destroy!
   end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
