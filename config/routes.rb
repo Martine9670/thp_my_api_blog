@@ -1,12 +1,15 @@
 Rails.application.routes.draw do
-  devise_for :users
+  # 1. On définit la page d'accueil pour voir ton JSON directement
+  root "articles#index"
+
+  # 2. On lie Devise aux contrôleurs API (indispensable pour éviter l'erreur 500)
+  devise_for :users, controllers: {
+    registrations: 'users/registrations'
+  }
+
+  # 3. Tes routes pour les articles
   resources :articles
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Route de santé par défaut de Rails 8
   get "up" => "rails/health#show", as: :rails_health_check
-
-  # Defines the root path route ("/")
-  # root "posts#index"
 end
