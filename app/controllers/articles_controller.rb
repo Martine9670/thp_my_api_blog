@@ -17,16 +17,16 @@ class ArticlesController < ApplicationController
 
   # GET /articles/1
   def show
-    @article = Article.find(params[:id])
+      @article = Article.find(params[:id])
 
-    # Si l'article est privé ET que l'utilisateur n'est pas connecté
-    if @article.private && current_user.nil?
-      render json: { error: "Accès refusé : cet article est privé." }, status: :unauthorized
-    else
-      render json: @article
-    end
-  end
-  
+      if @article.private && current_user.nil?
+        render json: { error: "Accès refusé : cet article est privé." }, status: :unauthorized
+      else
+        # Ici, on ajoute l'inclusion pour ne pas envoyer juste l'article vide
+        render json: @article, include: [:user, :comments]
+      end
+    end  
+    
   # POST /articles
   def create
     # On crée l'article en le liant directement à l'utilisateur connecté
