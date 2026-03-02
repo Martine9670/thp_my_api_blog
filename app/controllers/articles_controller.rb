@@ -4,16 +4,29 @@ class ArticlesController < ApplicationController
 
   # GET /articles
   def index
-    @articles = Article.all
+    if current_user
+      # Si l'utilisateur est connecté : il voit le public + SES articles privés
+      @articles = Article.where(private: false).or(Article.where(user: current_user))
+    else
+      # Si personne n'est connecté : on ne voit que le public
+      @articles = Article.where(private: false)
+    end
 
     render json: @articles
   end
 
   # GET /articles/1
   def show
-    render json: @article
-  end
+    @article = Article.find(params[:id])
 
+    # Si l'article est privé ET que l'utilisateur n'est pas connecté
+    if @article.private && current_user.nil?
+      render json: { error: "Accès refusé : cet article est privé." }, status: :unauthorized
+    else
+      render json: @article
+    end
+  end
+  
   # POST /articles
   def create
     # On crée l'article en le liant directement à l'utilisateur connecté
@@ -50,7 +63,8 @@ class ArticlesController < ApplicationController
     end
 
     # Only allow a list of trusted parameters through.
-    def article_params
-      params.expect(article: [ :title, :content ])
-    end
+  def article_params
+    # On utilise require et permit, c'est la valeur sûre
+    params.require(:article).permit(:title, :content, :private)
+  end
 end
