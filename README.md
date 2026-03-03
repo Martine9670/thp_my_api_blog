@@ -1,24 +1,46 @@
-# README
+# My API Blog 🚀
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A robust Ruby on Rails REST API designed to serve as a backend for a modern blogging platform.
 
-Things you may want to cover:
+## 🛠 Features
 
-* Ruby version
+* **User Authentication:** Fully secured with Devise and Devise-JWT.
+* **Articles:** CRUD operations with ownership protection.
+* **Comments:** Logic allowing users to comment on articles.
+* **Photos:** Resource management for image URLs.
+* **Security:** CORS enabled and JWT revocation strategy.
 
-* System dependencies
+## ⚙️ Tech Stack
 
-* Configuration
+* **Framework:** Ruby on Rails 8.x (API Mode)
+* **Database:** SQLite3
+* **Auth:** Devise + JWT
 
-* Database creation
+---
 
-* Database initialization
+## 🚀 Getting Started
 
-* How to run the test suite
+### 1. Installation
+`bundle install`
 
-* Services (job queues, cache servers, search engines, etc.)
+### 2. Database Setup
+`rails db:migrate`
 
-* Deployment instructions
+### 3. Run the Server
+`rails server`
 
-* ...
+---
+
+## 🛤 Main API Endpoints
+
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :--- |
+| GET | /articles | List all articles | No |
+| POST | /articles | Create article | Yes |
+| POST | /comments | Add comment | Yes |
+| POST | /photos | Add photo URL | Yes |
+| DELETE | /articles/:id | Delete article | Yes (Owner) |
+
+---
+
+**Author:** Martine PINNA
